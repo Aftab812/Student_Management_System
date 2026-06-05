@@ -1,10 +1,11 @@
 import { useState } from "react";
+import "./App.css";
 
 function App() {
 
-  const [student, setStudent] = useState(null);
+  const [students, setStudents] = useState([]);
 
-  const getStudent = async () => {
+  const getStudents = async () => {
 
     const response = await fetch(
       "http://localhost:9090/students"
@@ -12,29 +13,27 @@ function App() {
 
     const data = await response.json();
 
-    setStudent(data);
+    setStudents(data);
   };
 
   return (
     <div style={{ padding: "40px" }}>
 
-      <button onClick={getStudent}>
+      <button onClick={getStudents}>
         Get Student
       </button>
 
-      {
-        student && (
-          <div>
-
-            <h2>ID : {student.id}</h2>
-
-            <h2>Name : {student.name}</h2>
-
-            <h2>Course : {student.course}</h2>
-
-          </div>
-        )
-      }
+      <ul
+        style={{
+    listStylePosition: "inside",
+    textAlign: "center",
+  }}>
+        {students.map((student) => (
+          <li key={student.id}>
+            {student.name} - {student.course}
+          </li>
+        ))}
+      </ul>
 
     </div>
   );
